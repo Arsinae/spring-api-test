@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,5 +43,15 @@ public class OrdersController {
 	@GetMapping("/date/{date}")
 	public Iterable<Orders> getOrdesrByDate (@PathVariable String date) {
 		return orderRepository.findByDate(Date.valueOf(date));
+	}
+
+	@GetMapping("/price/{price}")
+	public Iterable<Orders> getOrdesrByPrice (
+		@PathVariable String price,
+		@RequestParam(defaultValue = "0") String page
+	) {
+		Float priceFloat = Float.parseFloat(price);
+		Pageable pageSet = PageRequest.of(Integer.parseInt(page), 1);
+		return orderRepository.findAllByPrice(priceFloat, pageSet);
 	}
 }
