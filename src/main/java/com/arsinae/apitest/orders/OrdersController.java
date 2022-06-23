@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,5 +31,10 @@ public class OrdersController {
 	@GetMapping("")
 	public Iterable<Orders> getAllOrder () {
 		return orderRepository.findAll();
+	}
+
+	@GetMapping("/{id}")
+	public Optional<Orders> getOrderById (@PathVariable String id) {
+		return orderRepository.findById(Integer.parseInt(id));
 	}
 }
