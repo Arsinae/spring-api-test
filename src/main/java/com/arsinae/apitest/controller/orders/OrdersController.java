@@ -1,11 +1,17 @@
-package com.arsinae.apitest.orders;
+package com.arsinae.apitest.controller.orders;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
+
+import com.arsinae.apitest.model.datecount.DateCount;
+import com.arsinae.apitest.model.orders.Orders;
+import com.arsinae.apitest.repository.orders.OrdersRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +28,7 @@ public class OrdersController {
 	private OrdersRepository orderRepository;
 
 	@PostMapping(path="")
-  public @ResponseBody Orders addNewUser (@RequestParam Float price) {
+  public @ResponseBody Orders addNewOrder (@RequestParam Float price) {
     Orders order = new Orders();
     order.setPrice(price);
 		order.setDate(new Date(System.currentTimeMillis()));
@@ -31,8 +37,8 @@ public class OrdersController {
   }
 
 	@GetMapping("")
-	public Iterable<Orders> getAllOrder () {
-		return orderRepository.findAll();
+	public Iterable<Orders> getAllOrders () {
+		return orderRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 	}
 
 	@GetMapping("/{id}")
@@ -40,13 +46,18 @@ public class OrdersController {
 		return orderRepository.findById(Integer.parseInt(id));
 	}
 
+	@GetMapping("/date/count")
+	public List<DateCount> getOrdersByDate () {
+		return orderRepository.countOrdersByDate();
+	}
+
 	@GetMapping("/date/{date}")
-	public Iterable<Orders> getOrdesrByDate (@PathVariable String date) {
-		return orderRepository.findByDate(Date.valueOf(date));
+	public Iterable<Orders> getOrdersByDate (@PathVariable String date) {
+		return orderRepository.findAllByDate(Date.valueOf(date));
 	}
 
 	@GetMapping("/price/{price}")
-	public Iterable<Orders> getOrdesrByPrice (
+	public Iterable<Orders> getOrdersByPrice (
 		@PathVariable String price,
 		@RequestParam(defaultValue = "0") String page
 	) {
