@@ -37,4 +37,9 @@ public class OrdersController {
 	public Optional<Orders> getOrderById (@PathVariable String id) {
 		return orderRepository.findById(Integer.parseInt(id));
 	}
+
+	@GetMapping("/date/{date}")
+	public Iterable<Orders> getOrdesrByDate (@PathVariable String date) {
+		return orderRepository.findByDate(Date.valueOf(date));
+	}
 }
