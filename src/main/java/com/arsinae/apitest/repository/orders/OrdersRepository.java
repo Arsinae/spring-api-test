@@ -25,4 +25,6 @@ public interface OrdersRepository extends CrudRepository<Orders, Integer> {
 
   @Query(value = "SELECT 0 AS id, price, date FROM orders WHERE price = ?1 AND date = ?2", nativeQuery = true)
   List<Orders> findAllByPriceAndDate(Float price, Date date);
+
+  Iterable<Orders> findAllByClientId(Integer client_id);
 }

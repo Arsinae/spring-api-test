@@ -76,6 +76,12 @@ public class OrdersController {
 		Pageable pageSet = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size), sort);
 		return new ResponseEntity<Iterable<Orders>>(orderRepository.findAllByPrice(priceFloat, pageSet).getContent(), HttpStatus.OK);
 	}
+
+	@GetMapping("/client/{id}")
+	public ResponseEntity<Iterable<Orders>> getOrdersByClientId (@PathVariable String id) {
+		Iterable<Orders> orders = orderRepository.findAllByClientId(Integer.parseInt(id));
+		return new ResponseEntity<Iterable<Orders>>(orders, HttpStatus.OK);
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Orders>> getOrderById (@PathVariable String id) {
