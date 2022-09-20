@@ -3,16 +3,21 @@ package com.arsinae.apitest.model.orders;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
+import com.arsinae.apitest.model.client.Client;
 import com.arsinae.apitest.model.datecount.DateCount;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "orders")
@@ -39,8 +44,21 @@ public class Orders {
   private Integer id;
 
 	private Float price;
-
 	private Date date;
+
+  @ManyToOne
+  @JoinColumn(name="client_id")
+  @JsonIgnoreProperties("orders")
+  private Client client;
+
+  public Orders() {
+  }
+
+  public Orders(Float price, Date date, Integer client_id) {
+    this.price = price;
+    this.date = date;
+    this.client.setId(client_id);
+  }
 
 	public Integer getId() {
     return id;
@@ -64,5 +82,13 @@ public class Orders {
 
   public void setDate(Date date) {
     this.date = date;
+  }
+
+  public Client getClient() {
+    return this.client;
+  }
+
+  public void setClient(Client client) {
+    this.client = client;
   }
 }
