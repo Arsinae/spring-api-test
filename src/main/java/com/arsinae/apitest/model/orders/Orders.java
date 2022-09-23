@@ -3,7 +3,6 @@ package com.arsinae.apitest.model.orders;
 import java.sql.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.GeneratedValue;
